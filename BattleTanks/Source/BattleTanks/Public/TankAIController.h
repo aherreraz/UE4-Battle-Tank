@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 
+#include "Engine/World.h"
 #include "Public/Tank.h"
 
 #include "AIController.h"
@@ -18,4 +19,5 @@ public:
 	virtual void BeginPlay() override;
 
 	ATank* GetTank();
+	ATank* GetPlayerTank();
 };

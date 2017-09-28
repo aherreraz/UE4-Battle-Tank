@@ -16,7 +16,30 @@ void ATankPlayerController::BeginPlay()
 	}
 }
 
+void ATankPlayerController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	Aim();
+}
+
 ATank* ATankPlayerController::GetTank()
 {
 	return Cast<ATank>(GetPawn());
+}
+
+void ATankPlayerController::Aim()
+{
+	if (!GetTank()) { return; }
+	
+	FVector HitLocation;
+	if (GetSightRayHitLocation(HitLocation))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("HitLocation: %s"), *HitLocation.ToString());
+	}
+}
+
+bool ATankPlayerController::GetSightRayHitLocation(FVector& out_HitLocation)
+{
+	out_HitLocation = FVector(1.f);
+	return true;
 }
