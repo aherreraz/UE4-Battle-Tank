@@ -34,7 +34,7 @@ void ATankPlayerController::Aim()
 	FVector HitLocation;
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("HitLocation: %s"), *HitLocation.ToString());
+		GetTank()->AimAt(HitLocation);
 	}
 }
 
