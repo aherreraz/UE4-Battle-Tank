@@ -40,6 +40,10 @@ void ATankPlayerController::Aim()
 
 bool ATankPlayerController::GetSightRayHitLocation(FVector& out_HitLocation)
 {
+	int32 ScreenWidth, ScreenHeight;
+	GetViewportSize(ScreenWidth, ScreenHeight);
+	FVector2D ScreenPosition = FVector2D(ScreenWidth * AimX, ScreenHeight * AimY);
+
 	out_HitLocation = FVector(1.f);
 	return true;
 }

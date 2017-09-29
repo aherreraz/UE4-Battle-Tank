@@ -21,6 +21,13 @@ public:
 	ATank* GetTank();
 	void Aim();
 
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ScreenAimingPosition)
+	float AimX = 0.5f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ScreenAimingPosition)
+	float AimY = 0.3333f;
+
 private:
 	bool GetSightRayHitLocation(FVector& out_HitLocation);
 };
