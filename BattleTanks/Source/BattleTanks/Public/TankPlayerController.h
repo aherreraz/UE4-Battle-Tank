@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 
 #include "Public/Tank.h"
+#include "Engine/World.h"
 
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h"
@@ -29,6 +30,10 @@ protected:
 	float AimY = 0.3333f;
 
 private:
+	UPROPERTY(EditAnywhere)
+	float FireDistance = 1000000;
+
 	bool GetSightRayHitLocation(FVector& out_HitLocation) const;
 	bool GetLookDirection(FVector2D ScreenLocation, FVector& out_LookDirection) const;
+	bool GetLookVectorHitLocation(FVector LookDirection, FVector& out_HitLocation) const;
 };

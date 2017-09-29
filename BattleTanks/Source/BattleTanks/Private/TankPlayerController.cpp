@@ -48,10 +48,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& out_HitLocation) con
 	/// Deproject the screen position of the crosshair to a world direction
 	FVector LookDirection;
 	if (GetLookDirection(ScreenPosition, LookDirection))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Look direction: %s"), *LookDirection.ToString());
-	}
-	out_HitLocation = FVector(1.f);
+		GetLookVectorHitLocation(LookDirection, out_HitLocation);
 	return true;
 }
 
@@ -59,4 +56,21 @@ bool ATankPlayerController::GetLookDirection(FVector2D ScreenPosition, FVector& 
 {
 	FVector CameraWorldLocation;
 	return DeprojectScreenPositionToWorld(ScreenPosition.X, ScreenPosition.Y, CameraWorldLocation, out_LookDirection);
+}
+bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector& out_HitLocation) const
+{
+	FHitResult HitResult;
+	FVector StartLocation = PlayerCameraManager->GetCameraLocation();
+	FVector EndLocation = StartLocation + LookDirection * FireDistance;
+	if (GetWorld()->LineTraceSingleByChannel(
+		HitResult,
+		StartLocation,
+		EndLocation,
+		ECollisionChannel::ECC_Visibility))
+	{
+		out_HitLocation = HitResult.Location;
+		return true;
+	}
+	out_HitLocation = FVector(0.f);
+	return false;
 }
