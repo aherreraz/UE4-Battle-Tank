@@ -29,5 +29,6 @@ protected:
 	float AimY = 0.3333f;
 
 private:
-	bool GetSightRayHitLocation(FVector& out_HitLocation);
+	bool GetSightRayHitLocation(FVector& out_HitLocation) const;
+	bool GetLookDirection(FVector2D ScreenLocation, FVector& out_LookDirection) const;
 };
