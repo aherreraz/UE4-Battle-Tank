@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
 #include "Public/Tank.h"
 #include "TankPlayerController.generated.h"
@@ -14,13 +13,14 @@ class BATTLETANKS_API ATankPlayerController : public APlayerController
 	GENERATED_BODY()
 	
 public:
-	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
 	ATank* GetTank();
 	void Aim();
 
 protected:
+	virtual void BeginPlay() override;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ScreenAimingPosition)
 	float AimX = 0.5f;
 
