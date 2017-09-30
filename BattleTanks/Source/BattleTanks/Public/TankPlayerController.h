@@ -21,14 +21,14 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ScreenAimingPosition)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = ScreenAimingPosition)
 	float AimX = 0.5f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ScreenAimingPosition)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = ScreenAimingPosition)
 	float AimY = 0.3333f;
 
 private:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	float FireDistance = 1000000;
 
 	bool GetSightRayHitLocation(FVector& out_HitLocation) const;
