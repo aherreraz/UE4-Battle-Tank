@@ -42,5 +42,10 @@ private:
 	UPROPERTY(EditAnywhere, Category = Firing)
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 
+	UPROPERTY(EditAnywhere, Category = Firing)
+	float ReloadTime = 3.f;
+
 	UTankBarrel* Barrel = nullptr;
+
+	float LastFireTime = 0.f;
 };
