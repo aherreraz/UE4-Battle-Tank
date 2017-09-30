@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "Public/TankAimingComponent.h"
 #include "Public/TankBarrel.h"
+#include "Public/TankTurret.h"
 #include "Tank.generated.h"
 
 UCLASS()
@@ -27,6 +28,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrelReference(UTankBarrel* Barrel);
+
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetTurretReference(UTankTurret* Turret);
 
 protected:
 	UTankAimingComponent* TankAimingComponent = nullptr;

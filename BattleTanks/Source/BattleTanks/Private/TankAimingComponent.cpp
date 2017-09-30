@@ -62,7 +62,7 @@ void UTankAimingComponent::SetBarrelReference(UTankBarrel* Barrel)
 {
 	this->Barrel = Barrel;
 }
-void UTankAimingComponent::SetTurretReference(UStaticMeshComponent* Turret)
+void UTankAimingComponent::SetTurretReference(UTankTurret* Turret)
 {
 	this->Turret = Turret;
 }
@@ -70,9 +70,22 @@ void UTankAimingComponent::SetTurretReference(UStaticMeshComponent* Turret)
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
 	/// Get difference between current barrel rotation and aim direction
-	FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
-	FRotator AimRotator = AimDirection.Rotation();
-	FRotator DeltaRotator = AimRotator - BarrelRotator;
+	float CurPitch = Barrel->GetForwardVector().Rotation().Pitch;
+	float AimPitch = AimDirection.Rotation().Pitch;
+	float DeltaPitch = AimPitch - CurPitch;
 	
-	Barrel->Elevate(DeltaRotator.Pitch);
+	/// Get difference between current turret rotation and aim direction
+	float CurYaw = Turret->GetForwardVector().Rotation().Yaw;
+	UE_LOG(LogTemp, Warning, TEXT("CurYaw: %f"), CurYaw);
+	float AimYaw = AimDirection.Rotation().Yaw;
+	UE_LOG(LogTemp, Warning, TEXT("AimYaw: %f"), AimYaw);
+	
+	// Get the best direction to rotate the turret
+	float DeltaYaw = FMath::Fmod(AimYaw - CurYaw + 360.f, 360.f);
+	if (DeltaYaw > 180.f)
+		DeltaYaw -= 360.f;
+
+	// Rotate the barrel and the turret
+	Barrel->Elevate(DeltaPitch);
+	Turret->Rotate(DeltaYaw);
 }

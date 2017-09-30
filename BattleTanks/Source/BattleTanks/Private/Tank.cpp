@@ -7,7 +7,6 @@
 ATank::ATank()
 {
 	PrimaryActorTick.bCanEverTick = false;
-
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
 }
 
@@ -31,4 +30,9 @@ void ATank::AimAt(FVector HitLocation)
 void ATank::SetBarrelReference(UTankBarrel* Barrel)
 {
 	TankAimingComponent->SetBarrelReference(Barrel);
+}
+
+void ATank::SetTurretReference(UTankTurret* Turret)
+{
+	TankAimingComponent->SetTurretReference(Turret);
 }

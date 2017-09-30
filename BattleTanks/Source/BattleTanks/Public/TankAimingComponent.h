@@ -8,6 +8,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/ActorComponent.h"
 #include "Public/TankBarrel.h"
+#include "Public/TankTurret.h"
 #include "TankAimingComponent.generated.h"
 
 
@@ -30,10 +31,10 @@ public:
 
 	void AimAt(FVector HitLocation, float LaunchSpeed);
 	void SetBarrelReference(UTankBarrel* Barrel);
-	void SetTurretReference(UStaticMeshComponent* Turret);
+	void SetTurretReference(UTankTurret* Turret);
 private:
 	UTankBarrel* Barrel = nullptr;
-	UStaticMeshComponent* Turret = nullptr;
+	UTankTurret* Turret = nullptr;
 
 	void MoveBarrelTowards(FVector AimDirection);
 };
