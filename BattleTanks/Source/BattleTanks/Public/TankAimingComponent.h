@@ -7,10 +7,11 @@
 #include "GameFramework/Actor.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/ActorComponent.h"
+#include "Public/TankBarrel.h"
 #include "TankAimingComponent.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS( ClassGroup=(TankComponent), meta=(BlueprintSpawnableComponent) )
 class BATTLETANKS_API UTankAimingComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -28,8 +29,11 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void AimAt(FVector HitLocation, float LaunchSpeed);
-	void SetBarrelReference(UStaticMeshComponent* Barrel);
-
+	void SetBarrelReference(UTankBarrel* Barrel);
+	void SetTurretReference(UStaticMeshComponent* Turret);
 private:
-	UStaticMeshComponent* Barrel = nullptr;
+	UTankBarrel* Barrel = nullptr;
+	UStaticMeshComponent* Turret = nullptr;
+
+	void MoveBarrelTowards(FVector AimDirection);
 };
