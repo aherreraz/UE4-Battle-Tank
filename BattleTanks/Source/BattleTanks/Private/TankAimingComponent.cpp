@@ -44,7 +44,6 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		))
 	{
 		FVector AimDirection = LaunchVelocity.GetSafeNormal();
-		UE_LOG(LogTemp, Warning, TEXT("%s aiming at %s"), *GetOwner()->GetName(), *AimDirection.ToString());
 		MoveBarrelTowards(AimDirection);
 	}	
 }
@@ -67,9 +66,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	
 	/// Get difference between current turret rotation and aim direction
 	float CurYaw = Turret->GetForwardVector().Rotation().Yaw;
-	UE_LOG(LogTemp, Warning, TEXT("CurYaw: %f"), CurYaw);
 	float AimYaw = AimDirection.Rotation().Yaw;
-	UE_LOG(LogTemp, Warning, TEXT("AimYaw: %f"), AimYaw);
 	
 	// Get the best direction to rotate the turret
 	float DeltaYaw = FMath::Fmod(AimYaw - CurYaw + 360.f, 360.f);
