@@ -17,5 +17,5 @@ public:
 	
 private:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
-	float TrackMaxDrivingForce = 400000;
+	float TrackMaxDrivingForce = 40000000;
 };
