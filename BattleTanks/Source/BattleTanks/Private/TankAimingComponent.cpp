@@ -23,6 +23,12 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
+void UTankAimingComponent::Initialise(UTankBarrel* Barrel, UTankTurret* Turret)
+{
+	this->Barrel = Barrel;
+	this->Turret = Turret;
+}
+
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
 	if (!Barrel) { return; }

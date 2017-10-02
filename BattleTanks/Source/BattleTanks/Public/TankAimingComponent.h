@@ -24,6 +24,9 @@ protected:
 public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void Initialise(UTankBarrel* Barrel, UTankTurret* Turret);
+
 	void AimAt(FVector HitLocation, float LaunchSpeed);
 	void SetBarrelReference(UTankBarrel* Barrel);
 	void SetTurretReference(UTankTurret* Turret);
