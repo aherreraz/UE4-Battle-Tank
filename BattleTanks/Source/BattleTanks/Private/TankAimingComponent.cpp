@@ -54,15 +54,6 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	}	
 }
 
-void UTankAimingComponent::SetBarrelReference(UTankBarrel* Barrel)
-{
-	this->Barrel = Barrel;
-}
-void UTankAimingComponent::SetTurretReference(UTankTurret* Turret)
-{
-	this->Turret = Turret;
-}
-
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
 	/// Get difference between current barrel rotation and aim direction
