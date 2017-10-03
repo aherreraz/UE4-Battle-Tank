@@ -23,7 +23,7 @@ void ATankPlayerController::Tick(float DeltaTime)
 	Aim();
 }
 
-ATank* ATankPlayerController::GetTank()
+ATank* ATankPlayerController::GetTank() const
 {
 	return Cast<ATank>(GetPawn());
 }

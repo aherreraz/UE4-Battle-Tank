@@ -14,12 +14,14 @@ class BATTLETANKS_API ATankPlayerController : public APlayerController
 	
 public:
 	virtual void Tick(float DeltaTime) override;
-
-	ATank* GetTank();
+	
 	void Aim();
 
 protected:
 	virtual void BeginPlay() override;
+
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	ATank* GetTank() const;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = ScreenAimingPosition)
 	float AimX = 0.5f;

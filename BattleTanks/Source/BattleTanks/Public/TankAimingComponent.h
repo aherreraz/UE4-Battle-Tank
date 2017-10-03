@@ -9,6 +9,13 @@
 #include "Public/TankTurret.h"
 #include "TankAimingComponent.generated.h"
 
+UENUM()
+enum class EAimingStatus : uint8
+{
+	Reloading,
+	Aiming,
+	Locked
+};
 
 UCLASS( ClassGroup=(TankComponent), meta=(BlueprintSpawnableComponent) )
 class BATTLETANKS_API UTankAimingComponent : public UActorComponent
