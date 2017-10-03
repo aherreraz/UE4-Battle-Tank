@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
-#include "Public/Tank.h"
+#include "Public/TankAimingComponent.h"
 #include "TankAIController.generated.h"
 
 UCLASS()
@@ -17,8 +17,8 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
-	ATank* GetTank();
-	ATank* GetPlayerTank();
-
 	float AcceptanceRadius = 3000;
+
+private:
+	UTankAimingComponent* GetAimingComponent();
 };

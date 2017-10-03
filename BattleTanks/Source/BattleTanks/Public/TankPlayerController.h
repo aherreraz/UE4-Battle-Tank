@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "Public/Tank.h"
+#include "Public/TankAimingComponent.h"
 #include "TankPlayerController.generated.h"
 
 UCLASS()
@@ -18,20 +18,22 @@ public:
 	void Aim();
 
 protected:
-	virtual void BeginPlay() override;
-
-	UFUNCTION(BlueprintCallable, Category = Setup)
-	ATank* GetTank() const;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = ScreenAimingPosition)
 	float AimX = 0.5f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = ScreenAimingPosition)
 	float AimY = 0.3333f;
 
+	virtual void BeginPlay() override;
+	
+	UFUNCTION(BlueprintImplementableEvent, Category = Setup)
+	void FoundAimingComponent(UTankAimingComponent* AimingComponent);
+	
 private:
 	UPROPERTY(EditDefaultsOnly)
-	float FireDistance = 1000000;
+	float LineTraceDistance = 1000000;
+
+	UTankAimingComponent* GetAimingComponent();
 
 	bool GetSightRayHitLocation(FVector& out_HitLocation) const;
 	bool GetLookDirection(FVector2D ScreenLocation, FVector& out_LookDirection) const;

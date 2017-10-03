@@ -6,15 +6,10 @@
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	ATank* Tank = GetTank();
-	if (Tank)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerController possesing: %s"), *Tank->GetName());
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerController not possesing a tank"));
-	}
+	UTankAimingComponent* AimingComponent = GetAimingComponent();
+	if (!ensure(AimingComponent)) return;
+
+	FoundAimingComponent(AimingComponent);
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
@@ -23,20 +18,14 @@ void ATankPlayerController::Tick(float DeltaTime)
 	Aim();
 }
 
-ATank* ATankPlayerController::GetTank() const
-{
-	return Cast<ATank>(GetPawn());
-}
-
 void ATankPlayerController::Aim()
 {
-	if (!GetTank()) { return; }
+	UTankAimingComponent* AimingComponent = GetAimingComponent();
+	if (!ensure(AimingComponent)) return;
 	
 	FVector HitLocation;
 	if (GetSightRayHitLocation(HitLocation))
-	{
-		GetTank()->AimAt(HitLocation);
-	}
+		AimingComponent->AimAt(HitLocation);
 }
 
 bool ATankPlayerController::GetSightRayHitLocation(FVector& out_HitLocation) const
@@ -62,7 +51,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 {
 	FHitResult HitResult;
 	FVector StartLocation = PlayerCameraManager->GetCameraLocation();
-	FVector EndLocation = StartLocation + LookDirection * FireDistance;
+	FVector EndLocation = StartLocation + LookDirection * LineTraceDistance;
 	if (GetWorld()->LineTraceSingleByChannel(
 		HitResult,
 		StartLocation,
@@ -74,4 +63,11 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 	}
 	out_HitLocation = FVector(0.f);
 	return false;
+}
+
+UTankAimingComponent* ATankPlayerController::GetAimingComponent()
+{
+	APawn* Pawn = GetPawn();
+	if (!ensure(Pawn)) return nullptr;
+	return Pawn->FindComponentByClass<UTankAimingComponent>();
 }

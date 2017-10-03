@@ -13,12 +13,6 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-	aiming = FindComponentByClass<UTankAimingComponent>();
-}
-
-void ATank::AimAt(FVector HitLocation)
-{
-	aiming->AimAt(HitLocation, LaunchSpeed);
 }
 
 void ATank::Fire()
