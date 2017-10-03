@@ -31,6 +31,11 @@ void ATankAIController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (GetPlayerTank())
 	{
+		auto result = MoveToActor(GetPlayerTank(), AcceptanceRadius);
+		
+		if (result == EPathFollowingRequestResult::Failed)
+			UE_LOG(LogTemp, Error, TEXT("result: Failed"));
+
 		GetTank()->AimAt(GetPlayerTank()->GetActorLocation());
 		GetTank()->Fire();
 	}

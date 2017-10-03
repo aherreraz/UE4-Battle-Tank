@@ -19,4 +19,6 @@ public:
 
 	ATank* GetTank();
 	ATank* GetPlayerTank();
+
+	float AcceptanceRadius = 3000;
 };
