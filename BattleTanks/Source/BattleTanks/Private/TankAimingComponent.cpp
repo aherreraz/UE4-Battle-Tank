@@ -12,11 +12,13 @@ UTankAimingComponent::UTankAimingComponent()
 void UTankAimingComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	LastFireTime = GetWorld()->GetTimeSeconds();
 }
 
 void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	AimingStatus = UpdatedAimingStatus();
 }
 
 void UTankAimingComponent::Initialise(UTankBarrel* Barrel, UTankTurret* Turret)
@@ -28,9 +30,7 @@ void UTankAimingComponent::Initialise(UTankBarrel* Barrel, UTankTurret* Turret)
 void UTankAimingComponent::Fire()
 {
 	if (!ensure(Barrel && Projectile)) return;
-
-	bool isReady = (FPlatformTime::Seconds() - LastFireTime) > ReloadTime;
-	if (isReady)
+	if (AimingStatus != EAimingStatus::Reloading)
 	{
 		AProjectile* projectile = GetWorld()->SpawnActor<AProjectile>(
 			Projectile,
@@ -38,7 +38,7 @@ void UTankAimingComponent::Fire()
 			Barrel->GetSocketRotation(FName("Projectile"))
 			);
 		projectile->LaunchProjectile(LaunchSpeed);
-		LastFireTime = FPlatformTime::Seconds();
+		LastFireTime = GetWorld()->GetTimeSeconds();
 	}
 }
 
@@ -62,12 +62,12 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 			ESuggestProjVelocityTraceOption::DoNotTrace
 		))
 	{
-		FVector AimDirection = LaunchVelocity.GetSafeNormal();
-		MoveBarrelTowards(AimDirection);
+		AimDirection = LaunchVelocity.GetSafeNormal();
+		MoveBarrelTowards();
 	}	
 }
 
-void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
+void UTankAimingComponent::MoveBarrelTowards()
 {
 	/// Get difference between current barrel rotation and aim direction
 	float CurPitch = Barrel->GetForwardVector().Rotation().Pitch;
@@ -86,4 +86,16 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	// Rotate the barrel and the turret
 	Barrel->Elevate(DeltaPitch);
 	Turret->Rotate(DeltaYaw);
+}
+
+EAimingStatus UTankAimingComponent::UpdatedAimingStatus()
+{
+	if (!ensure(Barrel))
+		return EAimingStatus::Unknown;
+	if (GetWorld()->GetTimeSeconds() - LastFireTime < ReloadTime)
+		return EAimingStatus::Reloading;
+	if (Barrel->GetForwardVector().Equals(AimDirection))
+		return EAimingStatus::Locked;
+	else
+		return EAimingStatus::Aiming;
 }

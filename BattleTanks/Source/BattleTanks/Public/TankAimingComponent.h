@@ -13,6 +13,7 @@
 UENUM()
 enum class EAimingStatus : uint8
 {
+	Unknown,
 	Reloading,
 	Aiming,
 	Locked
@@ -28,6 +29,9 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+	UPROPERTY(BlueprintReadOnly, Category = Aiming)
+	EAimingStatus AimingStatus = EAimingStatus::Reloading;
 
 public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -53,6 +57,8 @@ private:
 	float LastFireTime = 0.f;
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
+	FVector AimDirection;
 
-	void MoveBarrelTowards(FVector AimDirection);
+	void MoveBarrelTowards();
+	EAimingStatus UpdatedAimingStatus();
 };
