@@ -7,6 +7,7 @@
 #include "Components/ActorComponent.h"
 #include "Public/TankBarrel.h"
 #include "Public/TankTurret.h"
+#include "Public/Projectile.h"
 #include "TankAimingComponent.generated.h"
 
 UENUM()
@@ -34,12 +35,22 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void Initialise(UTankBarrel* Barrel, UTankTurret* Turret);
 
-	void AimAt(FVector HitLocation);
+	UFUNCTION(BlueprintCallable, Category = Firing)
+	void Fire();
 
+	void AimAt(FVector HitLocation);
+	
 private:
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float LaunchSpeed = 5000;
 
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	TSubclassOf<AProjectile> Projectile;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float ReloadTime = 3.f;
+
+	float LastFireTime = 0.f;
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
 
