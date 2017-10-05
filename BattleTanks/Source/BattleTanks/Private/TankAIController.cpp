@@ -18,7 +18,8 @@ void ATankAIController::Tick(float DeltaTime)
 	
 	auto result = MoveToActor(PlayerPawn, AcceptanceRadius);
 	AimingComponent->AimAt(PlayerPawn->GetActorLocation());
-	AimingComponent->Fire();
+	if (AimingComponent->GetAimingStatus() == EAimingStatus::Locked)
+		AimingComponent->Fire();
 }
 
 UTankAimingComponent* ATankAIController::GetAimingComponent()

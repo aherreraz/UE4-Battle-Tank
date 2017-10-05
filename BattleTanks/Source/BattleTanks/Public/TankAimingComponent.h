@@ -27,13 +27,15 @@ class BATTLETANKS_API UTankAimingComponent : public UActorComponent
 public:
 	UTankAimingComponent();
 
+	UFUNCTION(BlueprintCallable, Category = Aiming)
+	EAimingStatus GetAimingStatus() const;
+
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(BlueprintReadOnly, Category = Aiming)
+public:
 	EAimingStatus AimingStatus = EAimingStatus::Reloading;
 
-public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UFUNCTION(BlueprintCallable, Category = Setup)

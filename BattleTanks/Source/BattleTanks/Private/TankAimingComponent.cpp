@@ -9,6 +9,11 @@ UTankAimingComponent::UTankAimingComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
+EAimingStatus UTankAimingComponent::GetAimingStatus() const
+{
+	return AimingStatus;
+}
+
 void UTankAimingComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -94,7 +99,7 @@ EAimingStatus UTankAimingComponent::UpdatedAimingStatus()
 		return EAimingStatus::Unknown;
 	if (GetWorld()->GetTimeSeconds() - LastFireTime < ReloadTime)
 		return EAimingStatus::Reloading;
-	if (Barrel->GetForwardVector().Equals(AimDirection))
+	if (Barrel->GetForwardVector().Equals(AimDirection, 0.01f))
 		return EAimingStatus::Locked;
 	else
 		return EAimingStatus::Aiming;
