@@ -12,10 +12,18 @@ class BATTLETANKS_API UTankTrack : public UStaticMeshComponent
 	GENERATED_BODY()
 	
 public:
+	UTankTrack();
+
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
 	UFUNCTION(BlueprintCallable, Category = Input)
 	void SetThrottle(float Throttle);
 	
 private:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	float TrackMaxDrivingForce = 40000000;
+
+	UPrimitiveComponent* TankRoot = nullptr;
+	
+	UPrimitiveComponent* GetTankRoot();
 };
