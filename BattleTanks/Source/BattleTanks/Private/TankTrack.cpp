@@ -1,28 +1,39 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankTrack.h"
+#include "Engine/World.h"
 
 UTankTrack::UTankTrack()
 {
-	PrimaryComponentTick.bCanEverTick = true;
-}
-
-void UTankTrack::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	float SideSpeed = GetComponentVelocity() | GetRightVector();
-	FVector CounterAcceleration = -SideSpeed * GetRightVector() / DeltaTime;
-	FVector CounterForce = (GetTankRoot()->GetMass() * CounterAcceleration) / 2;
-	UE_LOG(LogTemp, Warning, TEXT("Mass: %f"), GetTankRoot()->GetMass());
-	GetTankRoot()->AddForce(CounterForce);
+	OnComponentHit.AddDynamic(this, &UTankTrack::OnHit);
 }
 
 void UTankTrack::SetThrottle(float Throttle)
 {
-	FVector ForceApplied = GetForwardVector() * Throttle * TrackMaxDrivingForce;
+	CurrentThrottle = FMath::Clamp<float>(CurrentThrottle + Throttle, -1.f, 1.f);
+}
+
+void UTankTrack::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor, UPrimitiveComponent * OtherComponent, FVector NormalImpulse, const FHitResult & Hit)
+{
+	DriveTrack();
+	AddSideForce();
+	CurrentThrottle = 0.f;
+}
+
+void UTankTrack::DriveTrack()
+{
+	FVector ForceApplied = GetForwardVector() * CurrentThrottle * TrackMaxDrivingForce;
 	FVector ForceLocation = GetComponentLocation();
 	GetTankRoot()->AddForceAtLocation(ForceApplied, ForceLocation);
+}
+
+void UTankTrack::AddSideForce()
+{
+	float DeltaTime = GetWorld()->GetDeltaSeconds();
+	float SideSpeed = GetComponentVelocity() | GetRightVector();
+	FVector CounterAcceleration = -SideSpeed * GetRightVector() / DeltaTime;
+	FVector CounterForce = (GetTankRoot()->GetMass() * CounterAcceleration) / 2;
+	GetTankRoot()->AddForce(CounterForce);
 }
 
 UPrimitiveComponent* UTankTrack::GetTankRoot()
