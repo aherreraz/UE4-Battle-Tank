@@ -19,6 +19,9 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintImplementableEvent, Category = Setup)
+	void UpdateHealthPercent(float HealthPercent);
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	int32 StartingHealth = 100;

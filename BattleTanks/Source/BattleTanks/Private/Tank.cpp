@@ -10,8 +10,14 @@ ATank::ATank()
 
 float ATank::TakeDamage(float Damage, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
 {
-	int32 RoundedDamage = FMath::RoundToInt(Damage);
-	CurrentHealth -= RoundedDamage;
+	// Apply Damage
+	int32 ActualDamage = FMath::Clamp(FMath::RoundToInt(Damage), 0, CurrentHealth);
+	CurrentHealth -= ActualDamage;
+
+	// Update Health Percent
+	float HeatlhPercent = 1.f * CurrentHealth / StartingHealth;
+	UpdateHealthPercent(HeatlhPercent);
+
 	if (CurrentHealth <= 0)
 	{
 		// TODO kill tank
