@@ -24,6 +24,9 @@ AProjectile::AProjectile()
 	ProjectileMovementComponent->bAutoActivate = false;
 
 	CollisionMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
+
+	ExplosionForce = CreateDefaultSubobject<URadialForceComponent>(FName("Explosion Force"));
+	ExplosionForce->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void AProjectile::BeginPlay()
@@ -41,4 +44,5 @@ void AProjectile::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor,
 {
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate();
+	ExplosionForce->FireImpulse();
 }
