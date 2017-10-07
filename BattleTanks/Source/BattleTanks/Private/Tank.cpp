@@ -3,13 +3,23 @@
 #include "Public/Tank.h"
 
 
-// Sets default values
 ATank::ATank()
 {
 	PrimaryActorTick.bCanEverTick = false;
 }
 
-// Called when the game starts or when spawned
+float ATank::TakeDamage(float Damage, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
+{
+	int32 RoundedDamage = FMath::RoundToInt(Damage);
+	CurrentHealth -= RoundedDamage;
+	if (CurrentHealth <= 0)
+	{
+		// TODO kill tank
+	}
+
+	return 0.f;
+}
+
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
