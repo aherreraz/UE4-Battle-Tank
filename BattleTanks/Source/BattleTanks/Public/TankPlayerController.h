@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright 2017, Andrés Herrera, All rights reserved.
 
 #pragma once
 
@@ -33,8 +33,11 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	float LineTraceDistance = 1000000;
 
-	UTankAimingComponent* GetAimingComponent();
+	UFUNCTION()
+	void OnTankDeath();
 
+	virtual void SetPawn(APawn* InPawn) override;
+	UTankAimingComponent* GetAimingComponent();
 	bool GetSightRayHitLocation(FVector& out_HitLocation) const;
 	bool GetLookDirection(FVector2D ScreenLocation, FVector& out_LookDirection) const;
 	bool GetLookVectorHitLocation(FVector LookDirection, FVector& out_HitLocation) const;

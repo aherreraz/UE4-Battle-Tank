@@ -1,13 +1,17 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright 2017, Andrés Herrera, All rights reserved.
 
 #include "Public/TankPlayerController.h"
 #include "Engine/World.h"
+#include "Public/Tank.h"
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	UTankAimingComponent* AimingComponent = GetAimingComponent();
-	if (!ensure(AimingComponent)) return;
+	if (!ensure(AimingComponent))
+	{
+		return;
+	}
 
 	FoundAimingComponent(AimingComponent);
 }
@@ -21,11 +25,15 @@ void ATankPlayerController::Tick(float DeltaTime)
 void ATankPlayerController::Aim()
 {
 	UTankAimingComponent* AimingComponent = GetAimingComponent();
-	if (!ensure(AimingComponent)) return;
-	
+	if (!ensure(AimingComponent))
+	{
+		return;
+	}	
 	FVector HitLocation;
 	if (GetSightRayHitLocation(HitLocation))
+	{
 		AimingComponent->AimAt(HitLocation);
+	}
 }
 
 bool ATankPlayerController::GetSightRayHitLocation(FVector& out_HitLocation) const
@@ -38,7 +46,9 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& out_HitLocation) con
 	/// Deproject the screen position of the crosshair to a world direction
 	FVector LookDirection;
 	if (GetLookDirection(ScreenPosition, LookDirection))
+	{
 		return GetLookVectorHitLocation(LookDirection, out_HitLocation);
+	}
 	return false;
 }
 
@@ -65,9 +75,31 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 	return false;
 }
 
+void ATankPlayerController::OnTankDeath()
+{
+	StartSpectatingOnly();
+}
+
+void ATankPlayerController::SetPawn(APawn * InPawn)
+{
+	Super::SetPawn(InPawn);
+	if (InPawn)
+	{
+		ATank* Tank = Cast<ATank>(InPawn);
+		if (!ensure(Tank))
+		{
+			return;
+		}
+		Tank->OnDeath.AddUniqueDynamic(this, &ATankPlayerController::OnTankDeath);
+	}
+}
+
 UTankAimingComponent* ATankPlayerController::GetAimingComponent()
 {
 	APawn* Pawn = GetPawn();
-	if (!ensure(Pawn)) return nullptr;
+	if (!ensure(Pawn))
+	{
+		return nullptr;
+	}
 	return Pawn->FindComponentByClass<UTankAimingComponent>();
 }

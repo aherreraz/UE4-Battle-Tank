@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright 2017, Andrés Herrera, All rights reserved.
 
 #include "TankTrack.h"
 #include "Engine/World.h"
@@ -39,6 +39,8 @@ void UTankTrack::AddSideForce()
 UPrimitiveComponent* UTankTrack::GetTankRoot()
 {
 	if (TankRoot)
+	{
 		return TankRoot;
+	}
 	return TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
 }

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright 2017, Andrés Herrera, All rights reserved.
 
 #include "BattleTanks.h"
 #include "Modules/ModuleManager.h"

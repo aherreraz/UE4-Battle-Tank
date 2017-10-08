@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright 2017, Andrés Herrera, All rights reserved.
 
 #include "TankMovementComponent.h"
 
@@ -10,14 +10,28 @@ void UTankMovementComponent::Initialise(UTankTrack* LeftTrack, UTankTrack* Right
 
 void UTankMovementComponent::IntendMoveForward(float Throw)
 {
-	if (!LeftTrack || !RightTrack) return;
+	if (!ensure(LeftTrack))
+	{
+		return;
+	}
+	if (!ensure(RightTrack))
+	{
+		return;
+	}
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(Throw);
 }
 
 void UTankMovementComponent::IntendTurnRight(float Throw)
 {
-	if (!LeftTrack || !RightTrack) return;
+	if (!ensure(LeftTrack))
+	{
+		return;
+	}
+	if (!ensure(RightTrack))
+	{
+		return;
+	}
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(-Throw);
 }

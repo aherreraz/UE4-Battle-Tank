@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright 2017, Andrés Herrera, All rights reserved.
 
 #pragma once
 
@@ -31,5 +31,5 @@ private:
 	int32 StartingHealth = 100;
 
 	UPROPERTY(VisibleAnywhere, Category = Health)
-	int32 CurrentHealth = StartingHealth;
+	int32 CurrentHealth;
 };

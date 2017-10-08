@@ -1,7 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright 2017, Andrés Herrera, All rights reserved.
 
 #include "Public/Tank.h"
-
 
 ATank::ATank()
 {
@@ -20,7 +19,9 @@ float ATank::TakeDamage(float Damage, FDamageEvent const & DamageEvent, AControl
 
 	// Kill tank
 	if (CurrentHealth <= 0)
+	{
 		OnDeath.Broadcast();
+	}
 
 	return 0.f;
 }
@@ -28,4 +29,5 @@ float ATank::TakeDamage(float Damage, FDamageEvent const & DamageEvent, AControl
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
+	CurrentHealth = StartingHealth;
 }

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright 2017, Andrés Herrera, All rights reserved.
 
 #include "TankAIController.h"
 #include "Engine/World.h"
@@ -15,16 +15,30 @@ void ATankAIController::Tick(float DeltaTime)
 	APawn* PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
 	UTankAimingComponent* AimingComponent = GetAimingComponent();
 
-	if (!ensure(PlayerPawn && AimingComponent)) return;
+	if (!ensure(PlayerPawn))
+	{
+		return;
+	}
+	if (!ensure(AimingComponent))
+	{
+		return;
+	}
 	
 	auto result = MoveToActor(PlayerPawn, AcceptanceRadius);
 	AimingComponent->AimAt(PlayerPawn->GetActorLocation());
 	if (AimingComponent->GetAimingStatus() == EAimingStatus::Locked)
+	{
 		AimingComponent->Fire();
+	}
 }
 
 void ATankAIController::OnTankDeath()
 {
+	if (!GetPawn())
+	{
+		return;
+	}
+	GetPawn()->DetachFromControllerPendingDestroy();
 }
 
 void ATankAIController::SetPawn(APawn * InPawn)
@@ -33,7 +47,10 @@ void ATankAIController::SetPawn(APawn * InPawn)
 	if (InPawn)
 	{
 		ATank* Tank = Cast<ATank>(InPawn);
-		if (!ensure(Tank)) return;
+		if (!ensure(Tank))
+		{
+			return;
+		}
 		Tank->OnDeath.AddUniqueDynamic(this, &ATankAIController::OnTankDeath);
 	}
 }
@@ -41,6 +58,9 @@ void ATankAIController::SetPawn(APawn * InPawn)
 UTankAimingComponent* ATankAIController::GetAimingComponent()
 {
 	APawn* Pawn = GetPawn();
-	if (!ensure(Pawn)) return nullptr;
+	if (!ensure(Pawn))
+	{
+		return nullptr;
+	}
 	return Pawn->FindComponentByClass<UTankAimingComponent>();
 }

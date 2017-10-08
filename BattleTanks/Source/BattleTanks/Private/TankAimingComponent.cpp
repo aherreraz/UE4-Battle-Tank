@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright 2017, Andrés Herrera, All rights reserved.
 
 #include "TankAimingComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -34,7 +34,14 @@ void UTankAimingComponent::Initialise(UTankBarrel* Barrel, UTankTurret* Turret)
 
 void UTankAimingComponent::Fire()
 {
-	if (!ensure(Barrel && Projectile)) return;
+	if (!ensure(Barrel))
+	{
+		return;
+	}
+	if (!ensure(Projectile))
+	{
+		return;
+	}
 	if (AimingStatus != EAimingStatus::Reloading)
 	{
 		AProjectile* projectile = GetWorld()->SpawnActor<AProjectile>(
@@ -49,11 +56,16 @@ void UTankAimingComponent::Fire()
 
 void UTankAimingComponent::AimAt(FVector HitLocation)
 {
-	if (!ensure(Barrel && Turret)) return;
-	
+	if (!ensure(Barrel))
+	{
+		return;
+	}
+	if (!ensure(Turret))
+	{
+		return;
+	}	
 	FVector LaunchVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
-
 	if (UGameplayStatics::SuggestProjectileVelocity
 		(
 			this,
@@ -86,7 +98,9 @@ void UTankAimingComponent::MoveBarrelTowards()
 	// Get the best direction to rotate the turret
 	float DeltaYaw = FMath::Fmod(AimYaw - CurYaw + 360.f, 360.f);
 	if (DeltaYaw > 180.f)
+	{
 		DeltaYaw -= 360.f;
+	}
 
 	// Rotate the barrel and the turret
 	Barrel->Elevate(DeltaPitch);
@@ -96,11 +110,19 @@ void UTankAimingComponent::MoveBarrelTowards()
 EAimingStatus UTankAimingComponent::UpdatedAimingStatus()
 {
 	if (!ensure(Barrel))
+	{
 		return EAimingStatus::Unknown;
+	}
 	if (GetWorld()->GetTimeSeconds() - LastFireTime < ReloadTime)
+	{
 		return EAimingStatus::Reloading;
+	}
 	if (Barrel->GetForwardVector().Equals(AimDirection, 0.01f))
+	{
 		return EAimingStatus::Locked;
+	}
 	else
+	{
 		return EAimingStatus::Aiming;
+	}
 }
