@@ -18,10 +18,9 @@ float ATank::TakeDamage(float Damage, FDamageEvent const & DamageEvent, AControl
 	float HeatlhPercent = 1.f * CurrentHealth / StartingHealth;
 	UpdateHealthPercent(HeatlhPercent);
 
+	// Kill tank
 	if (CurrentHealth <= 0)
-	{
-		// TODO kill tank
-	}
+		OnDeath.Broadcast();
 
 	return 0.f;
 }
